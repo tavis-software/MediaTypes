@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<tm>
+	<assembly id="23">
+		<task code="3434"></task>
+		<quantity>2</quantity>
+		<ratio>.7</ratio>
+	</assembly>
+	
+	<assembly id="23">
+		<quantity>1</quantity>
+		<ratio>.2</ratio>
+	</assembly>
+</tm>

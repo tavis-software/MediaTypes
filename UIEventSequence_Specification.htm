@@ -1,0 +1,279 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>SOE - Sequence of Event</title>
+    <link type="text/css" rel="stylesheet" href="spec.css" />
+		<style type="text/css">
+            .style1
+            {
+                color: red;
+            }
+        </style>
+		</head>
+	<body>
+    <div id="wrapper">
+		<div id="heading">
+				<h1>SOE - Sequence of events </h1>
+				<h2>A media type for capturing updates to a user interface</h2>
+				<dl>
+					<dt>Author:</dt>
+					<dd>Darrel Miller (<a href="mailto:mike@stateless.co">darrel@tavis.ca</a>)</dd>
+					<dt>Dates:</dt>
+					<dd>2011-10-04 (Created)</dd>
+					<dd></dd>
+					<dt>Status:</dt>
+					<dd class="stable">Initial Draft</dd>
+				</dl>
+	  </div>
+	  <div id="quote">
+	    <p>"Change is inevitable. Change is constant.&quot;</p>
+	    <p align="right">-- Benjamin Disraeli</p>
+	  </div>
+	  
+	  <div id="menu">
+	    <ul>
+	      <li><a href="#general">General Description</a></li>
+            <li><a href="#general">Motivation</a></li>
+	      <li><a href="#goals">Goals</a></li>
+	      <li><a href="#examples">Examples</a></li>
+	      <li><a href="#compliance">Compliance</a></li>
+        <li><a href="#media_type_identifiers">Media Type Identifiers</a></li>
+	      <li><a href="#components">Components</a></li>
+        <li><a href="#constraints">Constraints</a></li>
+        <!--<li><a href="#xml">HAL in XML</a></li>-->
+        <li><a href="#minimum">Minimum Valid Representation</a></li>
+        <li><a href="#recommendations">Recommendations</a></li>
+				<li><a href="#acknowlegements">Acknowledgements</a></li>
+        <li><a href="#notes">Notes</a></li>
+	    </ul>
+	  </div>
+		<div id="general">
+			<h2>General Description</h2>
+			<p>
+			    SOE is&nbsp; a media type designed for capturing user interface events during 
+                the modifcation of a resource representation in the sequence that they occured.&nbsp; 
+                The primary purpose is to communicate those events to a server where they can be 
+                replayed and affect change on a resource.</p>
+      <p>
+          A SOE document is generally constructed by a user agent in response to actions 
+          taken by the user to modify some data.&nbsp; Periodically, the SOE document is 
+          sent to the server in order for those changes to be applied.&nbsp;
+			</p>
+			<h2>Motivation</h2>
+      <p>
+          Currently there are only a few common methods in which resources are updated on 
+          the web.&nbsp; There is the complete replacement approach used by PUT, the 
+          x-www-form-urlencoded method used by HTML forms/jQuery and the new PATCH method 
+          that has no ubiqitous payload format.</p>
+            <p>
+                The SOE document provides a new approach to updating resources that supports 
+                partial updates, transient updates, sequenced updates, change rollback, 
+                hierachial documents, data binding and is easy to create and efficent.</p>
+            <h2>
+                Goals</h2>
+            <ul>
+                <li>Clarify SOE&#39;s design.</li>
+                <li>Identify available events</li>
+                <li>Provide a specification against which to standardise.</li>
+            </ul>
+		</div>
+		<div id="examples">
+			<h2>Examples</h2>
+            <p>
+       Here is an example of a SOE document:
+			</p>
+      <script src="https://gist.github.com/572481.js"> </script>
+    </div>
+		<div id="compliance">
+			<h2>Compliancee</h2>
+			<p>
+			 An implementation is not compliant if it fails to satisfy one or more
+			 of the MUST or REQUIRED level requirements. An implementation that satisfies all the MUST or REQUIRED
+			 level and all the SHOULD level requirements is said
+			 to be "unconditionally compliant"; one that satisfies all the MUST
+			 level requirements but not all the SHOULD level requirements is said to be "conditionally compliant."        
+			</p>
+			<blockquote>
+			  <p>
+			  The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+        NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
+        "OPTIONAL" in this document are to be interpreted as described in
+        <a href="#refs-2119">RFC 2119</a>.
+        </p>
+			</blockquote>
+		</div>
+    <div id="media_type_identifiers">
+      <h2>Media Type Identifiers</h2>
+      <dl>
+        <dt>application/vnd.tavis.SOE+xml</dt>
+        <dd>The XML based variant of SOE</dd>
+      </dl>
+        <h2>
+            Components</h2>
+        <p>
+            SOE has a single root element that contains list of events:</p>
+        <ol>
+            <li>
+                <h4>
+                    Events sequence</h4>
+                <p>
+                    The Events element is the root element and contains a set of child elements 
+                    where each child element represents an event.&nbsp; </p>
+            </li>
+            <li>
+                <h4>
+                    Core Events</h4>
+                <p>
+                    Core events enable basic manipulation of elements within a document.</p>
+                <h4>
+                    Fragment Events</h4>
+                <p>
+                    Fragment events enable the manipulation of fragments of a document in isolation.&nbsp; 
+                    This is valuable for doing transient edits on small parts of a large document.</p>
+                <p>
+                    &nbsp;</p>
+            </li>
+        </ol>
+        <h3>
+            Shared Attributes</h3>
+        <p>
+            All <strong>Events</strong> share the following attributes:</p>
+        <ul>
+            <li>
+                <h4>
+                    @Safe</h4>
+                <p>
+                    OPTIONAL</p>
+                <p>
+                    This attribute is used to identify events that will not cause a change to a 
+                    resource.&nbsp; Some events are used to navigate the user interface&nbsp; when 
+                    working with fragments.&nbsp; <span class="style1">This whole concept could 
+                    become redundant if I can find a way to use the URI to point to the currently 
+                    focused fragment.</span></p>
+            </li>
+            <li>
+                <h4>
+                    @Permanent</h4>
+                <p>
+                    OPTIONAL</p>
+                <p style="color: #FF0000">
+                    This attribute is used to indicate that all prior events are to be made 
+                    permanent.&nbsp; This attribute should be at the Events level.</p>
+            </li>
+            <li>
+                <h4>
+                    @Name</h4>
+                <p>
+                    Used to identify the type of event.</p>
+            </li>
+        </ul>
+        <h3>
+            Core Events</h3>
+        <p>
+            The following are attribute definitions applicable only to HAL's <strong>Link</strong> element.</p>
+        <ul>
+            <li>
+                <h4>PropertyChangedEvent</h4>
+                <p>Path : An anchor or fragment identifier that points to node of the document that 
+                    has been changed</p>
+                <p>Value: The new value of the specified node.</p>
+            </li>
+            <li>
+                <h4>ActionEvent</h4>
+                <p>Name: Name of the action invoked by the user</p>
+            </li>
+            <li>
+                <h4>SaveEvent</h4>
+            </li>
+            <li>
+                <h4>SelectResourceEvent</h4>
+                <p>Url: URL of the resource selected by the user</p>
+            </li>
+            <li>
+                <h4>UnselectResourceEvent</h4>
+                <p>Url: URL of the resource unselected by the user</p>
+            </li>
+            <li>
+                <h4>ExternalInputEvent</h4>
+            </li>
+            <li>
+                <h4>CloseEvent</h4>
+            </li>
+            <li>
+                <h4>CopyEvent</h4>
+            </li>
+        </ul>
+        <h4>
+            &nbsp;</h4>
+        <h3>
+            Fragment Events</h3>
+        <p>
+            The following are attribute definitions applicable only to HAL's <strong>Resource</strong> element.</p>
+        <ul>
+            <li>
+                <h4>CreateFragmentEvent</h4>
+                <p>description</p>
+            </li>
+            <li>
+                <h4>DeleteFragment</h4>
+                <p>
+                    Content embedded within a <strong>Resource</strong> element MAY be a full, partial, summary, or incorrect representation of the content available at the target URI. Applications which use HAL MAY clarify the integrity of specific embedded content via the description of the relevant 
+                    <strong>@rel</strong> value.</p>
+            </li>
+                        <li>
+                <h4>CreateFragmentEvent</h4>
+                <p>description</p>
+            </li>
+                        <li>
+                <h4>FocusFragmentEvent</h4>
+                <p>description</p>
+            </li>
+            <li>
+                <h4>UnfocusFragmentEvent</h4>
+                <p>description</p>
+            </li>
+            <li>
+                <h4>ViewFragmentEvent</h4>
+                <p>description</p>
+            </li>
+
+
+        </ul>
+    </div>
+    <div id="constraints">
+      <h2>Constraints</h2>
+      <p>The root element MUST be a <strong>Events</strong> element with zero or more 
+          Event elements within it.</p>
+    </div>
+    <!--<div id="xml">
+      <h2>HAL in XML (application/hal+xml)</h2>
+      <p>..TODO..</p>
+    </div>-->
+        <div id="minimum">
+            <h2>Minimum Valid Representation</h2>
+      <p><strong>XML</strong></p>
+      <script src="https://gist.github.com/1025927.js"> </script>
+      <script src="https://gist.github.com/1027509.js"> </script>
+    </div>
+    <div id="recommendations">
+      <h2>Recommendations</h2>
+      <p>Link relation values used in HAL representations SHOULD be URIs which, when dereferenced, provide relevant details. The <a href="http://www.w3.org/TR/curie/">CURIE syntax</a> MAY be used for brevity.</p>
+		</div>
+    <div id="extending">
+      <h2>Extending UIEventSource</h2>
+      <p>&nbsp;</p>
+        <h2>
+            Acknowledgements</h2>
+        <p>
+            &nbsp;</p>
+    </div>
+    <div id="notes">
+      <h2>Notes</h2>
+      <p>&nbsp;</p>
+    </div>
+    
+    
+	</body>
+</html>

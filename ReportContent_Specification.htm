@@ -1,0 +1,165 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>HAL - Hypertext Application Language</title>
+    <link type="text/css" rel="stylesheet" href="spec.css" />
+		</head>
+	<body>
+    <div id="wrapper">
+		<div id="heading">
+				<h1>Report Content </h1>
+				<h2>A media type for delivering content to a reporting engine</h2>
+				<dl>
+					<dt>Author:</dt>
+					<dd>Darrel Miller (<a href="mailto:mike@stateless.co">darrel@tavis.ca</a>)</dd>
+					<dt>Dates:</dt>
+					<dd>2013-01-23 (Created)</dd>
+					<dt>Version:</dt>
+					<dd>0.0.1</dd>
+					<dt>Status:</dt>
+					<dd class="stable">Initial Draft</dd>
+				</dl>
+	  </div>
+		<div id="general">
+			<h2>General Description</h2>
+			<p>
+			    TK.&nbsp;&nbsp;&nbsp; </p>
+            <h2>Motivation</h2>
+
+            <p>
+            <ul>
+                <li>Fairly compact format to allow for large (40-80pages) reports</li>
+                <li>Simplify report design processes by having consistency in data documents</li>
+                <li>Allow client to reactively render report viewer.</li>
+            </ul>
+
+        </p>
+            <h2>
+                Non-Goals</h2>
+            <ul>
+                <li>It is not intended to be a general purpose data import/export format. </li>
+                <li>It does not constraint the allowed relationships between entities.</li>
+                <li>It does not constraint the allowed relationships between entities and contained properties.</li>
+            </ul>
+		</div>
+		<div id="examples">
+			<h2>Examples</h2>
+            <p>
+       Here is an example of a ReportContent document:
+			</p>
+            <pre>
+&lt;Document Title=&quot;Sales By Region&quot;&gt;
+	&lt;Region Code="23"&gt;
+		&lt;task code="3434"&gt;&lt;/task&gt;
+		&lt;quantity&gt;2&lt;/quantity&gt;
+		&lt;ratio&gt;.7&lt;/ratio&gt;
+	&lt;/Region&gt;
+	
+	&lt;Region id="23"&gt;
+		&lt;quantity&gt;1&lt;/quantity&gt;
+		&lt;ratio&gt;.2&lt;/ratio&gt;
+	&lt;/Region&gt;
+&lt;/Document&gt;
+            </pre>
+
+    </div>
+		<div id="compliance">
+			<h2>Compliance</h2>
+			<p>
+			 An implementation is not compliant if it fails to satisfy one or more
+			 of the MUST or REQUIRED level requirements. An implementation that satisfies all the MUST or REQUIRED
+			 level and all the SHOULD level requirements is said
+			 to be "unconditionally compliant"; one that satisfies all the MUST
+			 level requirements but not all the SHOULD level requirements is said to be "conditionally compliant."        
+			</p>
+			<blockquote>
+			  <p>
+			  The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+        NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
+        "OPTIONAL" in this document are to be interpreted as described in
+        <a href="#refs-2119">RFC 2119</a>.
+        </p>
+			</blockquote>
+		</div>
+    <div id="media_type_identifiers">
+      <h2>Media Type Identifiers</h2>
+      <dl>
+        <dt>application/vnd.tavis.reportcontent+xml</dt>
+        <dd></dd>
+      </dl>
+        <h2>
+            Components</h2>
+        <p>
+            A TID document has a single root named tm.&nbsp; All elements and attributes 
+            MUST be camelcased.</p>
+        <ol>
+            <li>
+                <h4>
+                    Root Element</h4>
+                <p>
+                    The root element can contain zero, one or multiple entity references. It can also contain link elements.
+                    The root element MUST contain an attribute named version that conforms to 
+                    semantic versioning rules as defined by http://www.semver.org</p>
+            </li>
+            <li>
+                <h4>
+                    Entity Reference</h4>
+                <p>
+                    Entity reference elements MUST contain either an id or code attribute.&nbsp; 
+                    Entity references can contain zero, one or multiple property elements or entity 
+                    reference elements.&nbsp; Entity references MUST use one of the following 
+                    element names:
+                </p>
+                
+                    <ul>
+                    <li>assembly</li>
+                    <li>operation</li>
+                    <li>task</li>
+                    <li>part</li>
+                    <li>job</li>
+                        <li>ncr</li>
+                        <li>lot</li>
+                        <li>machine</li>
+                        <li>location</li>
+                        <li>externalIdentifier</li>
+                    </ul>
+                </li>
+                <li>
+                <h4>
+                    Property</h4>
+                <p>
+                    Property elements MUST only contain a text node.&nbsp; Property elements can be 
+                    used within any entity reference element but MUST use one of the following 
+                    element names:</p>
+                    <ul>
+                    <li>quantity</li>
+                    <li>ratio</li>
+                    </ul>
+            </li>
+            <li><h4>Link</h4>
+            <p>Link elements MUST contain a rel attribute and an href attribute.  Link elements can be used within entity references and the root node.</p>
+            </li>
+        </ol>
+        <h2>
+            Recommendations</h2>
+        <p>
+            Link relation values used to identify the links that retrieve TIDs can be used 
+            to further define the significance of properties within entitiy references and 
+            the relationships between those entities.</p>
+    </div>
+    <div id="extending">
+      <h2>Extending TID</h2>
+      <p>As new entity reference names and property names are added, the patch value on the version 
+          number MUST be incremented.&nbsp; The minor version MUST be incremented if 
+          existing vocabulary is removed or changed.</p>
+        <h2>
+            Notes</h2>
+        <p>
+            &nbsp;</p>
+    </div>
+    
+    
+	</body>
+</html>
